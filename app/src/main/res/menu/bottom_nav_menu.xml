@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/favourite"
+        android:title="Favourite"
+        android:icon="@drawable/ic_favourite"/>
+
+    <item
+        android:id="@+id/order"
+        android:title="Order"
+        android:icon="@drawable/ic_order"/>
+
+    <item
+        android:id="@+id/store"
+        android:title="Store"
+        android:icon="@drawable/ic_store"/>
+
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/ic_profile"/>
+
+</menu>

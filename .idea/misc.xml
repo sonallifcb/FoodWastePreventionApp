@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/activity_main.xml" value="0.268" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_favourite.xml" value="0.2546875" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_order.xml" value="0.2269021739130435" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2546875" />
       </map>
     </option>
   </component>
