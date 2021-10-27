@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/drawable/edit_text_background.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1636546184738956" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout-w936dp/activity_login.xml" value="0.191015625" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/activity_login.xml" value="0.2546875" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_favourite.xml" value="0.36" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_order.xml" value="0.2269021739130435" />
