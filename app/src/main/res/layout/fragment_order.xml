@@ -3,12 +3,152 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:background="#FFCC29"
     tools:context=".OrderFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llorder"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginRight="10dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                cardview:cardCornerRadius="5dp"
+                cardview:cardElevation="10dp"
+                cardview:cardMaxElevation="12dp"
+                cardview:cardBackgroundColor="#ffff"
+                cardview:cardPreventCornerOverlap="true"
+                cardview:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffff"
+                    android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/fnd2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:text="Food Name"
+                    android:textColor="#206A5D"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"/>
+
+                <TextView
+                    android:id="@+id/rnd2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:text="Restaurant Name"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/fnd2"/>
+
+                <ImageView
+                    android:id="@+id/imageView1d2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:maxHeight="25dp"
+                    android:src="@drawable/clock_foreground"
+                    android:layout_below="@+id/rnd2"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"/>
+
+                <TextView
+                    android:id="@+id/dayd2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:text="Day,"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_below="@+id/rnd2"
+                    android:layout_toEndOf="@+id/imageView1d2"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="12dp"
+                    android:text="Time"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_below="@+id/rnd2"
+                    android:layout_toEndOf="@+id/dayd2"/>
+
+                <TextView
+                    android:id="@+id/p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:text="Price"
+                    android:textColor="#ff0000"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/imageView1d2"/>
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="105dp"
+                    android:layout_alignParentRight="true"
+                    android:maxHeight="150dp"
+                    android:src="@drawable/food_photo"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"/>
+
+
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/p"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="19dp"
+                    android:text="A K 0 0 1"
+                    android:textSize="10pt"
+                    android:textStyle="bold" />
+
+                    <Button
+                    android:id="@+id/button2"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:text="COLLECTED"
+                    android:layout_below="@id/p"
+                    android:backgroundTint="#206A5D"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_alignParentRight="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Go to the restaurant at the specified date and time and show them this receipt to redeem your order."
+                        android:textSize="11dp" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

@@ -3,15 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/drawable-anydpi/camera_foreground.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/drawable-anydpi/ic_store.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/drawable-anydpi/listeditems_foreground.xml" value="0.2708333333333333" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/drawable/edit_text_background.xml" value="0.2708333333333333" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1636546184738956" />
-        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout-w936dp/activity_login.xml" value="0.191015625" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout-w936dp/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/activity_login.xml" value="0.2546875" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_favourite.xml" value="0.36" />
-        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_order.xml" value="0.2269021739130435" />
-        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_profile.xml" value="0.3" />
-        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_store.xml" value="0.36" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_new_item.xml" value="0.2546875" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_order.xml" value="0.36" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_profile.xml" value="0.268" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_store.xml" value="0.44000000000000006" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/fragment_view_items.xml" value="0.36" />
+        <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/layout/sample_food_card_view.xml" value="0.2546875" />
         <entry key="..\:/Users/sonal/AndroidStudioProjects/FoodWastePreventionApplication/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2546875" />
       </map>
     </option>

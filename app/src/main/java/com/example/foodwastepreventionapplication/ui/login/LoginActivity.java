@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.foodwastepreventionapplication.MainActivity;
 import com.example.foodwastepreventionapplication.R;
+import com.example.foodwastepreventionapplication.data.model.LoggedInUser;
 import com.example.foodwastepreventionapplication.ui.login.LoginViewModel;
 import com.example.foodwastepreventionapplication.ui.login.LoginViewModelFactory;
 import com.example.foodwastepreventionapplication.databinding.ActivityLoginBinding;
@@ -76,9 +77,11 @@ private ActivityLoginBinding binding;
                     updateUiWithUser(loginResult.getSuccess());
                 }
                 setResult(Activity.RESULT_OK);
-
+            LoginResult a =  loginViewModel.getLoginResult().getValue();
+                LoggedInUser user = new LoggedInUser("abc",a.getSuccess().getDisplayName());
                 //Complete and destroy login activity once successful
                 Intent myIntent = new Intent(getApplicationContext(),MainActivity.class);
+                myIntent.putExtra("user", user.getDisplayName());
                 startActivity(myIntent);
             }
         });

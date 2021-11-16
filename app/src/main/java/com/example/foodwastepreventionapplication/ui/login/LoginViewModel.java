@@ -10,6 +10,8 @@ import com.example.foodwastepreventionapplication.data.Result;
 import com.example.foodwastepreventionapplication.data.model.LoggedInUser;
 import com.example.foodwastepreventionapplication.R;
 
+import java.io.IOException;
+
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
@@ -30,7 +32,18 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
+        Result<LoggedInUser> result;
+
+        if (username.equals("customer") || username.equals("restaurant") ) {
+            LoggedInUser fakeUser =
+                    new LoggedInUser(
+                            java.util.UUID.randomUUID().toString(),
+                            username);
+            result = new Result.Success<>(fakeUser);
+        }
+        else {
+            result = new Result.Error(new IOException("Error logging in"));
+        }
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
