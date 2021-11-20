@@ -1,12 +1,16 @@
 package com.example.foodwastepreventionapplication;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +59,55 @@ public class ViewItemsFragment extends Fragment {
         }
     }
 
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_view_items, container, false);
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_items, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_items, container, false);
+        FWPADbHelper dbHelper = new FWPADbHelper(view.getContext());
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery
+                ("SELECT f.name as foodname, f.price, f.datetime, f.quantity, f._id FROM  food f", null);
+
+        LinearLayout ll = view.findViewById(R.id.llviewItems);
+
+        while(cursor.moveToNext()) {
+            String foodName = cursor.getString(
+                    cursor.getColumnIndexOrThrow("foodname"));
+            Double price = cursor.getDouble(
+                    cursor.getColumnIndexOrThrow("price"));
+            String datetime = cursor.getString(
+                    cursor.getColumnIndexOrThrow("datetime"));
+            Integer quantity = cursor.getInt(
+                    cursor.getColumnIndexOrThrow("quantity"));
+            Integer foodRowID = cursor.getInt(
+                    cursor.getColumnIndexOrThrow("_id"));
+
+
+            Log.d("storeFragment", "onCreateView: " + foodName + " " + price) ;
+
+
+//            ll.addView(FoodCardView.createCard(view.getContext(),sellerName,foodName,
+//                    "Today,",datetime,"4.6","0.8km","RM " + String.format("%.2f", price),quantity,foodRowID, dbHelper));
+            ll.addView(FoodCardView.createViewItemsCard(view.getContext(),foodName,"Today,",
+                    datetime,"RM " + String.format("%.2f", price),quantity,foodRowID,dbHelper));
+        }
+
+        cursor.close();
+
+        String user = (String) getActivity().getIntent().getSerializableExtra("user");
+
+        Log.d("viewItemsFragment","user " + user);
+        return view;
     }
+
+
 }

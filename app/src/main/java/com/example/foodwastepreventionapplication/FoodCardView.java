@@ -177,8 +177,8 @@ public class FoodCardView {
                 R.drawable.food_photo,0,0,0,0,1,true));
         rl.addView(createTextView(c,tokenID,14,52,0,0,token,0,0,0,Typeface.BOLD,
                 RelativeLayout.BELOW,priceID,0,0,20,false));
-        rl.addView(createTextView(c,statusID,150,52,0,0,"TO BE COLLECTED",255,255,255,
-                Typeface.BOLD,RelativeLayout.END_OF,tokenID,RelativeLayout.BELOW,priceID,16,true));
+        rl.addView(createTextView(c,statusID,390,60,0,0,"TO BE COLLECTED",255,255,255,
+                Typeface.BOLD,0,0,RelativeLayout.BELOW,priceID,16,true));
         rl.addView(createTextView(c,textID,14,44,0,0,"Go to the restaurant at the specified date and time and show them this receipt to redeem your order",
                 117,117,117,Typeface.NORMAL,RelativeLayout.BELOW,statusID,0,0,11,false));
 
@@ -186,6 +186,62 @@ public class FoodCardView {
 
         return cv;
     }
+
+
+    public static CardView createViewItemsCard(Context c, String foodName, String day, String time,
+                                               String price, Integer quantity, Integer foodRowID,
+                                               FWPADbHelper dbHelper){
+
+        androidx.cardview.widget.CardView cv = new CardView(c);
+        cv.setRadius(30);
+        RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams
+                (1100, 600);
+        layout.setMargins(0,0,20,0);
+        cv.setLayoutParams(layout);
+        cv.setMaxCardElevation(60);
+        cv.setElevation(50);
+        cv.setPreventCornerOverlap(true);
+        cv.setUseCompatPadding(true);
+        cv.setClickable(true);
+
+        int foodID = View.generateViewId();
+        int clockImage = View.generateViewId();
+        int dayID = View.generateViewId();
+        int priceID = View.generateViewId();
+        int foodImage = View.generateViewId();
+        int unitID = View.generateViewId();
+        int foodRowIDID = View.generateViewId();
+        int quantityID = View.generateViewId();
+        RelativeLayout rl = new RelativeLayout(c);
+
+        rl.addView(createTextView(c,foodID,15,9,0,0,foodName,32,106,93,
+                Typeface.BOLD,0,0,0,0,16,false));
+        rl.addView(createImageView(c,clockImage,60,60,0,18,0,0,60,
+                R.drawable.clock_foreground,RelativeLayout.BELOW,foodID,0,0,0,false));
+        rl.addView(createTextView(c,dayID,6,21,0,0,day,72,72,72,
+                Typeface.BOLD,RelativeLayout.BELOW,foodID,RelativeLayout.END_OF,clockImage,0,false));
+        rl.addView(createTextView(c,0,9,21,0,0,time,72,72,72,
+                Typeface.BOLD,RelativeLayout.BELOW,foodID,RelativeLayout.END_OF,dayID,0,false));
+        rl.addView(createTextView(c,priceID,15,21,0,0,price,255,0,0,
+                Typeface.BOLD,RelativeLayout.BELOW,clockImage,0,0,16,false));
+        rl.addView(createImageView(c,foodImage,450,450,0,0,0,0,450,
+                R.drawable.food_photo,0,0,0,0,1,false));
+        rl.addView(createTextView(c,unitID,15,21,0,0,quantity + " Units Left",255,255,255,Typeface.BOLD,
+                RelativeLayout.BELOW,clockImage,RelativeLayout.BELOW,priceID,16,true));
+
+        rl.addView(createHiddenTextView(c, foodRowID.toString(), foodRowIDID));
+        rl.addView(createHiddenTextView(c, quantity.toString(), quantityID));
+
+        rl.setPadding(36,36,36,36);
+
+        cv.addView(rl);
+
+
+        return cv;
+    }
+
+
+
 
     public static TextView createTextView(Context c,int ID, int ml, int mt, int mr, int mb, String text,
                                           int r, int g, int b, int TypefaceStyle,int verb, int subject,

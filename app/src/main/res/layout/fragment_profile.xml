@@ -20,7 +20,7 @@
             android:id="@+id/imageView"
             android:layout_width="350px"
             android:layout_height="350px"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="80dp"
             android:src="@drawable/logo"
             android:layout_gravity="center_horizontal"/>
 
@@ -31,7 +31,7 @@
             android:text="Name"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="30dp"/>
 
         <EditText
             android:id="@+id/editTextTextPersonName"
@@ -40,7 +40,11 @@
             android:layout_marginTop="20px"
             android:background="@drawable/edit_text_background"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:text="Ali Kopitiam"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:padding="5dp"/>
 
         <TextView
             android:id="@+id/textView"
@@ -59,7 +63,32 @@
             android:layout_marginTop="20px"
             android:background="@drawable/edit_text_background"
             android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:text="alikopitiam@gmail.com"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"/>
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70px"
+            android:fontFamily="sans-serif-black"
+            android:text="Location"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editTextTextLocation"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="20px"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Subang Jaya"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"/>
 
 <!--        <TextView-->
 <!--            android:id="@+id/textView2"-->
@@ -81,11 +110,12 @@
 <!--            android:inputType="textPassword" />-->
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/logoutButton"
             android:layout_width="150dp"
             android:layout_height="60dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="50dp"
             android:backgroundTint="#206A5D"
+            android:layout_marginLeft="10dp"
             android:text="Logout"
             android:layout_gravity="center_horizontal"/>
 

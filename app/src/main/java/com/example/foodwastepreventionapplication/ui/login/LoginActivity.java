@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodwastepreventionapplication.FWPADbHelper;
 import com.example.foodwastepreventionapplication.MainActivity;
 import com.example.foodwastepreventionapplication.R;
 import com.example.foodwastepreventionapplication.data.model.LoggedInUser;
@@ -78,11 +79,15 @@ private ActivityLoginBinding binding;
                 }
                 setResult(Activity.RESULT_OK);
             LoginResult a =  loginViewModel.getLoginResult().getValue();
-                LoggedInUser user = new LoggedInUser("abc",a.getSuccess().getDisplayName());
+//                LoggedInUser user = new LoggedInUser("abc",a.getSuccess().getDisplayName());
                 //Complete and destroy login activity once successful
-                Intent myIntent = new Intent(getApplicationContext(),MainActivity.class);
-                myIntent.putExtra("user", user.getDisplayName());
-                startActivity(myIntent);
+                if (a.getSuccess() != null){
+                    Intent myIntent = new Intent(getApplicationContext(),MainActivity.class);
+                    myIntent.putExtra("user", a.getSuccess().getDisplayName());
+                    myIntent.putExtra("userId",a.getSuccess().getId());
+                    startActivity(myIntent);
+                }
+
             }
         });
 
@@ -111,7 +116,7 @@ private ActivityLoginBinding binding;
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                            passwordEditText.getText().toString(),new FWPADbHelper(getApplicationContext()));
                 }
                 return false;
             }
@@ -122,7 +127,7 @@ private ActivityLoginBinding binding;
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                        passwordEditText.getText().toString(),new FWPADbHelper(getApplicationContext()));
             }
         });
     }

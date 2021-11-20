@@ -3,8 +3,14 @@ package com.example.foodwastepreventionapplication.ui.login;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.util.Patterns;
 
+import com.example.foodwastepreventionapplication.FWPAContract;
+import com.example.foodwastepreventionapplication.FWPADbHelper;
 import com.example.foodwastepreventionapplication.data.LoginRepository;
 import com.example.foodwastepreventionapplication.data.Result;
 import com.example.foodwastepreventionapplication.data.model.LoggedInUser;
@@ -30,24 +36,37 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password, FWPADbHelper dbHelper) {
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result;
 
-        if (username.equals("customer") || username.equals("restaurant") ) {
-            LoggedInUser fakeUser =
+        Cursor cursor = db.rawQuery
+                ("SELECT " + FWPAContract.Users._ID + " FROM " + FWPAContract.Users.TABLE_NAME + " WHERE " + FWPAContract.Users.COLUMN_NAME_USERNAME + "=?" + " AND " + FWPAContract.Users.COLUMN_NAME_PASSWORD + "=?", new String[]{username,password});
+
+        Log.d("login","Cursor Count : " + cursor.getCount());
+
+        if(cursor.getCount()>0){
+
+            cursor.moveToNext();
+            Integer Id = cursor.getInt(
+                    cursor.getColumnIndexOrThrow("_id"));
+
+            LoggedInUser User =
                     new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
+                            Id,
                             username);
-            result = new Result.Success<>(fakeUser);
+            result = new Result.Success<>(User);
         }
         else {
             result = new Result.Error(new IOException("Error logging in"));
         }
+        cursor.close();
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName(),data.getUserId())));
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClaimFragment"
+    android:background="#FFCC29">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_marginRight="10dp">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="350px"
+        android:layout_height="350px"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/logo"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:text="Enter receipt code"
+        android:layout_marginLeft="24dp"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:textSize="24dp"
+        android:paddingRight="5dp"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-black"
+        android:inputType="textEmailAddress"/>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:backgroundTint="#206A5D"
+            android:text="CLAIM"
+            android:textColor="#ffff"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+</FrameLayout>

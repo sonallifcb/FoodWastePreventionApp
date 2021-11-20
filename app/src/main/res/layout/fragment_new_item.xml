@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_marginRight="00dp"
         android:padding="5dp">
 
         <androidx.cardview.widget.CardView
@@ -30,9 +29,11 @@
             cardview:cardCornerRadius="5dp"
             cardview:cardElevation="10dp"
             cardview:cardMaxElevation="12dp"
-            cardview:cardBackgroundColor="#5C5B5B"
+            cardview:cardBackgroundColor="#206A5D"
             cardview:cardPreventCornerOverlap="true"
             cardview:cardUseCompatPadding="true">
+
+<!--            cardview:cardBackgroundColor="#5C5B5B"-->
 
             <ImageView
                 android:id="@+id/imageView21"
@@ -66,10 +67,10 @@
         <EditText
             android:id="@+id/newitemtitle"
             android:layout_width="320dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="35dp"
-            android:padding="2dp"
+            android:paddingLeft="15dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:inputType="text"/>
@@ -86,10 +87,10 @@
         <EditText
             android:id="@+id/newitemdesc"
             android:layout_width="320dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="35dp"
-            android:padding="2dp"
+            android:paddingLeft="15dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:inputType="text"/>
@@ -106,10 +107,10 @@
         <EditText
             android:id="@+id/newitemtime"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="35dp"
-            android:padding="2dp"
+            android:paddingLeft="15dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:inputType="time"/>
@@ -126,10 +127,10 @@
         <EditText
             android:id="@+id/newitemprice"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="35dp"
-            android:padding="2dp"
+            android:paddingLeft="15dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:inputType="numberDecimal"/>
@@ -146,10 +147,10 @@
         <EditText
             android:id="@+id/newitemquantity"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="35dp"
-            android:padding="2dp"
+            android:paddingLeft="15dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:inputType="numberDecimal"/>

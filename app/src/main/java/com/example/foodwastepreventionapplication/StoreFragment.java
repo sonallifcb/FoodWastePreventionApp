@@ -114,6 +114,9 @@ public class StoreFragment extends Fragment {
 
         cursor.close();
 
+        String user = (String) getActivity().getIntent().getSerializableExtra("user");
+
+        Log.d("storeFragment","user " + user);
         return view;
     }
 }
