@@ -1,16 +1,20 @@
 package com.example.foodwastepreventionapplication;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.ColorInt;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,9 +90,11 @@ public class StoreFragment extends Fragment {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery
-        ("SELECT s.name as sellername, f.name as foodname, f.price, f.datetime, f.quantity, f._id FROM seller s INNER JOIN food f ON s._id = f.sellerid", null);
+        ("SELECT s.name as sellername, f.name as foodname, f.price, f.datetime, f.quantity, f._id, f.imagepath FROM seller s INNER JOIN food f ON s._id = f.sellerid", null);
 
         LinearLayout ll = view.findViewById(R.id.llstore);
+
+        Fragment currentFragment = this;
 
         while(cursor.moveToNext()) {
             String sellerName = cursor.getString(
@@ -103,13 +109,89 @@ public class StoreFragment extends Fragment {
                     cursor.getColumnIndexOrThrow("quantity"));
             Integer foodRowID = cursor.getInt(
                     cursor.getColumnIndexOrThrow("_id"));
+            String imagepath = cursor.getString(
+                    cursor.getColumnIndexOrThrow("imagepath"));
 
 
             Log.d("storeFragment", "onCreateView: " + sellerName + " " + foodName + " " + price) ;
 
+            CardView cv = FoodCardView.createCard(view.getContext(),sellerName,foodName,
+                    "Today,",datetime,"4.6","0.8km","RM " + String.format("%.2f", price),
+                    quantity,foodRowID, dbHelper, imagepath);
 
-            ll.addView(FoodCardView.createCard(view.getContext(),sellerName,foodName,
-                    "Today,",datetime,"4.6","0.8km","RM " + String.format("%.2f", price),quantity,foodRowID, dbHelper));
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+
+                                    SQLiteDatabase db = dbHelper.getReadableDatabase();
+                                    Cursor cursor = db.rawQuery("SELECT COUNT(foodId) AS totalOrder FROM receipt WHERE foodId = "  +  foodRowID, null);
+
+                                    int totalOrder = 0;
+                                    while(cursor.moveToNext()) {
+                                        totalOrder = cursor.getInt(
+                                                cursor.getColumnIndexOrThrow("totalOrder"));
+                                    }
+
+                                    if (quantity != 0){
+                                        SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
+
+                                        ContentValues values = new ContentValues();
+                                        values.put(FWPAContract.Receipt.COLUMN_NAME_FOODID, Integer.valueOf(foodRowID));
+                                        values.put(FWPAContract.Receipt.COLUMN_NAME_STATUS, "TO BE COLLECTED");
+                                        values.put(FWPAContract.Receipt.COLUMN_NAME_TOKEN, "AK-" + foodRowID + "-" + Integer.toString(totalOrder + 1));
+
+                                        long newRowId = dbWrite.insert(FWPAContract.Receipt.TABLE_NAME, null, values);
+                                        Log.d("newItem", "new item added with id " + newRowId + "with value " + values.toString());
+
+                                        ContentValues UpdateValues = new ContentValues();
+                                        UpdateValues.put(FWPAContract.Food.COLUMN_NAME_QUANTITY, quantity - 1);
+                                        dbWrite.update(FWPAContract.Food.TABLE_NAME, UpdateValues, "_id=?", new String[]{foodRowID.toString()});
+
+                                        Log.d("newItem", "Updated the quantity for _id " + foodRowID + " with " + (quantity - 1));
+
+                                        //Refresh the fragment
+                                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                        if (Build.VERSION.SDK_INT >= 26) {
+                                            ft.setReorderingAllowed(false);
+                                        }
+                                        ft.detach(currentFragment).attach(currentFragment).commit();
+
+                                    }
+
+                                    else{
+                                        Log.d("newItem", "Quantity not equal to 0");
+                                    }
+
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+//
+                    if (quantity != 0){
+                        builder.setMessage("Would you like to redeem this item?").setPositiveButton("Yes", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
+                    }
+
+                    else{
+                        builder.setMessage("Sorry this item is sold out").setPositiveButton("Yes",null).show();
+                    }
+
+                }
+            });
+
+
+            ll.addView(cv);
         }
 
         cursor.close();

@@ -77,7 +77,7 @@ public class OrderFragment extends Fragment {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery
-                ("SELECT r._id AS _id, f.name AS foodName, s.name AS restaurantName, f.datetime AS time, r.status AS status, f.price AS price, r.token AS token FROM receipt r " +
+                ("SELECT r._id AS _id, f.name AS foodName, s.name AS restaurantName, f.datetime AS time, r.status AS status, f.price AS price, r.token AS token, f.imagepath FROM receipt r " +
                         "INNER JOIN food f ON f._id = r.foodId " +
                         "INNER JOIN seller s ON s._id = f.sellerid", null);
         LinearLayout ll = view.findViewById(R.id.llorder);
@@ -99,13 +99,15 @@ public class OrderFragment extends Fragment {
                     cursor.getColumnIndexOrThrow("time"));
             Double price = cursor.getDouble(
                     cursor.getColumnIndexOrThrow("price"));
+            String imagepath = cursor.getString(
+                    cursor.getColumnIndexOrThrow("imagepath"));
 
 
             Log.d("orderFragment", "reading receipt: _id=" + _id + " status=" + status + " token=" + token) ;
 
 
             ll.addView(FoodCardView.createOrderCard(view.getContext(),foodName,restaurantName,"Today,",
-                    time,"RM " + String.format("%.2f", price),token));
+                    time,"RM " + String.format("%.2f", price),token, imagepath));
         }
 
         cursor.close();

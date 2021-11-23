@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.menu2);
         userId = (Integer) getIntent().getSerializableExtra("userId");
+        newItemFragment = new NewItemFragment().newInstance(userId);
+        viewItemsFragment = new ViewItemsFragment().newInstance(userId);
         Integer menuSize = bottomNavigationView.getMenu().size();
         FWPADbHelper dbHelper = new FWPADbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -132,37 +134,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-//            case R.id.favourite:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, favouriteFragment).commit();
-//                return true;
-
-//            case R.id.menu1:
-//                if (user.equals("customer") ){
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, orderFragment).commit();
-//                }
-//                else if (user.equals("restaurant")){
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, viewItemsFragment).commit();
-//                }
-//                return true;
-//
-//            case R.id.menu2:
-//                if (user.equals("customer") ){
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, storeFragment).commit();
-//
-//                }
-//                else if (user.equals("restaurant")){
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, newItemFragment).commit();
-//
-//                }
-//                return true;
-//
-//            case R.id.menu3:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, profileFragment).commit();
-//                return true;
-//
-//            case R.id.menu4:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, claimFragment).commit();
-//                return true;
 
             case R.id.menu1:
                 if (userType.equals("customer") ){

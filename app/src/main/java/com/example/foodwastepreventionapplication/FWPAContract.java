@@ -27,6 +27,7 @@ public final class FWPAContract {
         public static final String COLUMN_NAME_PRICE = "price";
         public static final String COLUMN_NAME_SELLERID =  "sellerid";
         public static final String COLUMN_NAME_DATETIME =  "datetime";
+        public static final String COLUMN_NAME_IMAGEPATH = "imagepath";
 
 
     }

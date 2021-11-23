@@ -36,7 +36,14 @@
 <!--            cardview:cardBackgroundColor="#5C5B5B"-->
 
             <ImageView
-                android:id="@+id/imageView21"
+                android:id="@+id/foodImage"
+                android:layout_width="322dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center_horizontal" />
+
+
+            <ImageView
+                android:id="@+id/addImageIcon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/camera_foreground"
@@ -45,6 +52,7 @@
                 android:layout_marginRight="5dp"/>
 
             <TextView
+                android:id="@+id/addImageText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add an image"

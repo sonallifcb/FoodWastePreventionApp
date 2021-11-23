@@ -1,13 +1,20 @@
 package com.example.foodwastepreventionapplication;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.text.CaseMap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +22,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,20 +33,19 @@ import android.widget.Spinner;
  */
 public class NewItemFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USERID = "userId";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Integer mUserId;
     private EditText title;
     private EditText description;
     private EditText time;
     private EditText price;
     private EditText quantity;
     private Spinner category;
+    private ImageView addImageIcon;
+    private ImageView foodImage;
+    private TextView addImageText;
+    private String filePath;
 
 
     public NewItemFragment() {
@@ -48,16 +56,13 @@ public class NewItemFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment NewItemFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewItemFragment newInstance(String param1, String param2) {
+    public static NewItemFragment newInstance(int _userId) {
         NewItemFragment fragment = new NewItemFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_USERID, _userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +71,30 @@ public class NewItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mUserId = getArguments().getInt(ARG_USERID);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = this.getActivity().getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            filePath = cursor.getString(columnIndex);
+            cursor.close();
+            try {
+                Bitmap image = BitmapFactory.decodeFile(filePath);
+                foodImage.setImageBitmap(image);
+                addImageIcon.setVisibility(View.INVISIBLE);
+                addImageText.setVisibility(View.INVISIBLE);
+            }
+            catch (OutOfMemoryError e){
+                Log.d ("abcd" ,"abcd");
+            }
         }
     }
 
@@ -90,6 +117,18 @@ public class NewItemFragment extends Fragment {
         price = (EditText)view.findViewById(R.id.newitemprice);
         quantity = (EditText)view.findViewById(R.id.newitemquantity);
         category = (Spinner)view.findViewById(R.id.spinner);
+        addImageIcon = (ImageView)view.findViewById(R.id.addImageIcon);
+        foodImage = (ImageView)view.findViewById(R.id.foodImage);
+        addImageText = (TextView) view.findViewById(R.id.addImageText);
+
+
+        addImageIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 1);
+            }
+        });
         // Inflate the layout for this fragment
 
         Button button = (Button) view.findViewById(R.id.createitembutton);
@@ -103,27 +142,25 @@ public class NewItemFragment extends Fragment {
                 Log.d("TAG", "onClick: "+quantity.getText().toString());
                 Log.d("TAG", "onClick: "+category.getSelectedItem().toString());
 
-//                String title = ((EditText)v.findViewById(R.id.newitemtitle)).getText().toString();
-//                String description = ((EditText)v.findViewById(R.id.newitemdesc)).getText().toString();
-//                String time = ((EditText)v.findViewById(R.id.newitemtime)).getText().toString();
-//                String price = ((EditText)v.findViewById(R.id.newitemprice)).getText().toString();
-//                String quantity = ((EditText)v.findViewById(R.id.newitemquantity)).getText().toString();
-//                Log.d("onCreate", title+" "+description+" "+time+" "+price+" "+quantity+" ");
-
                 ContentValues values = new ContentValues();
                 values.put(FWPAContract.Food.COLUMN_NAME_NAME, title.getText().toString());
                 values.put(FWPAContract.Food.COLUMN_NAME_DESCRIPTION, description.getText().toString());
                 values.put(FWPAContract.Food.COLUMN_NAME_QUANTITY,quantity.getText().toString());
                 values.put(FWPAContract.Food.COLUMN_NAME_CATEGORY, category.getSelectedItem().toString());
                 values.put(FWPAContract.Food.COLUMN_NAME_PRICE,price.getText().toString());
-                values.put(FWPAContract.Food.COLUMN_NAME_SELLERID, "1");
+                values.put(FWPAContract.Food.COLUMN_NAME_SELLERID, mUserId);
                 values.put(FWPAContract.Food.COLUMN_NAME_DATETIME, time.getText().toString());
+                values.put(FWPAContract.Food.COLUMN_NAME_IMAGEPATH, filePath);
+
 
                 FWPADbHelper dbHelper = new FWPADbHelper(v.getContext());
                 SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
 
                 long newRowId = dbWrite.insert(FWPAContract.Food.TABLE_NAME, null, values);
                 Log.d("db", "onCreateView: insertNewRowID " + newRowId);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setMessage("Listing created").setPositiveButton("OK",null).show();
 
             }
         });

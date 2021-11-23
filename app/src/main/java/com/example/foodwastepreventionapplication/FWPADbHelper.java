@@ -26,7 +26,8 @@ public class FWPADbHelper extends SQLiteOpenHelper {
                     FWPAContract.Food.COLUMN_NAME_CATEGORY+ " TEXT," +
                     FWPAContract.Food.COLUMN_NAME_PRICE+ " REAL," +
                     FWPAContract.Food.COLUMN_NAME_SELLERID+ " INTEGER," +
-                    FWPAContract.Food.COLUMN_NAME_DATETIME+ " TEXT)";
+                    FWPAContract.Food.COLUMN_NAME_DATETIME+ " TEXT," +
+                    FWPAContract.Food.COLUMN_NAME_IMAGEPATH+ " TEXT)";
 
     private static final String SQL_CREATE_RECEIPT =
             "CREATE TABLE " + FWPAContract.Receipt.TABLE_NAME + " (" +
@@ -46,7 +47,7 @@ public class FWPADbHelper extends SQLiteOpenHelper {
 
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION =9;
+    public static final int DATABASE_VERSION =10;
     public static final String DATABASE_NAME = "FWPA.db";
 
     public FWPADbHelper(Context context) {

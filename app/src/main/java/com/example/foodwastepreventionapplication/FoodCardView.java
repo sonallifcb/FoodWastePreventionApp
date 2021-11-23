@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -25,7 +27,8 @@ public class FoodCardView {
 
     public static CardView createCard(Context c,  String restaurantName, String foodName,
                                       String day, String time, String rating, String distance,
-                                      String price, Integer quantity, Integer foodRowID, FWPADbHelper dbHelper){
+                                      String price, Integer quantity, Integer foodRowID,
+                                      FWPADbHelper dbHelper, String imagepath){
 
         androidx.cardview.widget.CardView cv = new CardView(c);
         cv.setRadius(30);
@@ -59,25 +62,32 @@ public class FoodCardView {
         rl.addView(createTextView(c,foodID,15,9,0,0,foodName,72,72,72,
                 Typeface.BOLD,RelativeLayout.BELOW,restaurantID,0,0,0,false));
         rl.addView(createImageView(c,clockImage,60,60,0,9,0,0,60,
-                R.drawable.clock_foreground,RelativeLayout.BELOW,foodID,0,0,0,false));
+                R.drawable.clock_foreground,RelativeLayout.BELOW,foodID,0,0,0,false, null));
         rl.addView(createTextView(c,dayID,6,18,0,0,day,72,72,72,
                 Typeface.BOLD,RelativeLayout.BELOW,foodID,RelativeLayout.END_OF,clockImage,12,false));
         rl.addView(createTextView(c,0,9,18,0,0,time,72,72,72,
                 Typeface.BOLD,RelativeLayout.BELOW,foodID,RelativeLayout.END_OF,dayID,12,false));
         rl.addView(createImageView(c,starImage,60,60,0,0,0,0,60,
-                R.drawable.star_foreground,RelativeLayout.BELOW,clockImage,0,0,0,false));
+                R.drawable.star_foreground,RelativeLayout.BELOW,clockImage,0,0,0,false, null));
         rl.addView(createTextView(c,ratingID,6,9,0,0, rating,72,72,72,
                 Typeface.BOLD,RelativeLayout.BELOW,clockImage,RelativeLayout.END_OF,starImage,12,false));
         rl.addView(createImageView(c,locationImage,60,60,9,0,0,0,60,
-                R.drawable.location_foreground,RelativeLayout.BELOW,clockImage,RelativeLayout.END_OF,ratingID,0,false));
+                R.drawable.location_foreground,RelativeLayout.BELOW,clockImage,RelativeLayout.END_OF,ratingID,0,false, null));
         rl.addView(createTextView(c,distanceID,0,9,0,0,distance,72,72,72,
                 Typeface.BOLD,RelativeLayout.BELOW,clockImage,RelativeLayout.END_OF,locationImage,12,false));
         rl.addView(createTextView(c,priceID,15,0,0,0,price,255,0,0,
                 Typeface.BOLD,RelativeLayout.BELOW,starImage,0,0,0,false));
         rl.addView(createImageView(c,foodImage,450,450,0,0,0,0,450,
-                R.drawable.food_photo,0,0,0,0,1,false));
+                R.drawable.food_photo,0,0,0,0,1,false, imagepath));
+
+        if (quantity != 0){
         rl.addView(createTextView(c,unitID,15,6,0,0,quantity + " Units Left",255,255,255,Typeface.BOLD,
                 RelativeLayout.BELOW,starImage,RelativeLayout.END_OF,priceID,12,true));
+        }
+        else {
+            rl.addView(createTextView(c,unitID,15,6,0,0,"SOLD OUT",255,0,0,Typeface.BOLD,
+                    RelativeLayout.BELOW,starImage,RelativeLayout.END_OF,priceID,12,true));
+        }
 
         rl.addView(createHiddenTextView(c, foodRowID.toString(), foodRowIDID));
         rl.addView(createHiddenTextView(c, quantity.toString(), quantityID));
@@ -85,55 +95,12 @@ public class FoodCardView {
         rl.setPadding(36,36,36,36);
 //
         cv.addView(rl);
-        cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                TextView orderID = (TextView) view.findViewById(foodRowIDID);
-                                Log.d("rowID",orderID.getText().toString());
-                                //Yes button clicked
 
-                                SQLiteDatabase db = dbHelper.getReadableDatabase();
-                                Cursor cursor = db.rawQuery("SELECT COUNT(foodId) AS totalOrder FROM receipt WHERE foodId = "  +  orderID.getText().toString(), null);
-
-                                int totalOrder = 0;
-                                while(cursor.moveToNext()) {
-                                     totalOrder = cursor.getInt(
-                                            cursor.getColumnIndexOrThrow("totalOrder"));
-                                }
-
-                                ContentValues values = new ContentValues();
-                                values.put(FWPAContract.Receipt.COLUMN_NAME_FOODID, Integer.valueOf(orderID.getText().toString()));
-                                values.put(FWPAContract.Receipt.COLUMN_NAME_STATUS, "TO BE COLLECTED");
-                                values.put(FWPAContract.Receipt.COLUMN_NAME_TOKEN, "AK-" + orderID.getText().toString() + "-" + Integer.toString(totalOrder + 1));
-
-                                SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
-
-                                long newRowId = dbWrite.insert(FWPAContract.Receipt.TABLE_NAME, null, values);
-                                Log.d("newItem", "new item added with id " + newRowId + "with value " + values.toString());
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                break;
-                        }
-                    }
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                builder.setMessage("Would you like to redeem this item?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
-            }
-        });
         return cv;
     }
 
     public static CardView createOrderCard (Context c, String foodName, String restaurantName, String day,
-                                       String time, String price, String token){
+                                       String time, String price, String token, String imagepath){
         androidx.cardview.widget.CardView cv = new CardView(c);
         cv.setRadius(13);
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams
@@ -166,7 +133,7 @@ public class FoodCardView {
         rl.addView(createTextView(c,restaurantID,14,14,0,0,restaurantName,0,0,0,
                 Typeface.BOLD,RelativeLayout.BELOW,foodID,0,0,15,false));
         rl.addView(createImageView(c,clockImage,68,68,14,14,0,0,68,
-                R.drawable.clock_foreground,RelativeLayout.BELOW,restaurantID,0,0,0,false));
+                R.drawable.clock_foreground,RelativeLayout.BELOW,restaurantID,0,0,0,false, null));
         rl.addView(createTextView(c,dayID,9,27,0,0,day,0,0,0, Typeface.BOLD,
                 RelativeLayout.BELOW,restaurantID,RelativeLayout.END_OF,clockImage,12,false));
         rl.addView(createTextView(c,0,9,27,0,0,time,0,0,0,Typeface.BOLD,
@@ -174,7 +141,7 @@ public class FoodCardView {
         rl.addView(createTextView(c,priceID,14,14,0,0,price,255,0,0,Typeface.BOLD,
                 RelativeLayout.BELOW,clockImage,0,0,18,false));
         rl.addView(createImageView(c,foodImage,405,288,0,27,14,0,288,
-                R.drawable.food_photo,0,0,0,0,1,true));
+                R.drawable.food_photo,0,0,0,0,1,true, imagepath));
         rl.addView(createTextView(c,tokenID,14,52,0,0,token,0,0,0,Typeface.BOLD,
                 RelativeLayout.BELOW,priceID,0,0,20,false));
         rl.addView(createTextView(c,statusID,390,60,0,0,"TO BE COLLECTED",255,255,255,
@@ -190,7 +157,8 @@ public class FoodCardView {
 
     public static CardView createViewItemsCard(Context c, String foodName, String day, String time,
                                                String price, Integer quantity, Integer foodRowID,
-                                               FWPADbHelper dbHelper){
+                                               FWPADbHelper dbHelper, View.OnClickListener Listener,
+                                               String imagepath){
 
         androidx.cardview.widget.CardView cv = new CardView(c);
         cv.setRadius(30);
@@ -212,22 +180,29 @@ public class FoodCardView {
         int unitID = View.generateViewId();
         int foodRowIDID = View.generateViewId();
         int quantityID = View.generateViewId();
+        int deleteButtonId = View.generateViewId();
         RelativeLayout rl = new RelativeLayout(c);
 
         rl.addView(createTextView(c,foodID,15,9,0,0,foodName,32,106,93,
-                Typeface.BOLD,0,0,0,0,16,false));
-        rl.addView(createImageView(c,clockImage,60,60,0,18,0,0,60,
-                R.drawable.clock_foreground,RelativeLayout.BELOW,foodID,0,0,0,false));
-        rl.addView(createTextView(c,dayID,6,21,0,0,day,72,72,72,
+                Typeface.BOLD,0,0,0,0,18,false));
+        rl.addView(createImageView(c,clockImage,60,60,0,15,0,0,60,
+                R.drawable.clock_foreground,RelativeLayout.BELOW,foodID,0,0,0,false,null));
+        rl.addView(createTextView(c,dayID,6,18,0,0,day,72,72,72,
                 Typeface.BOLD,RelativeLayout.BELOW,foodID,RelativeLayout.END_OF,clockImage,0,false));
-        rl.addView(createTextView(c,0,9,21,0,0,time,72,72,72,
+        rl.addView(createTextView(c,0,9,18,0,0,time,72,72,72,
                 Typeface.BOLD,RelativeLayout.BELOW,foodID,RelativeLayout.END_OF,dayID,0,false));
-        rl.addView(createTextView(c,priceID,15,21,0,0,price,255,0,0,
+        rl.addView(createTextView(c,priceID,15,18,0,0,price,255,0,0,
                 Typeface.BOLD,RelativeLayout.BELOW,clockImage,0,0,16,false));
         rl.addView(createImageView(c,foodImage,450,450,0,0,0,0,450,
-                R.drawable.food_photo,0,0,0,0,1,false));
-        rl.addView(createTextView(c,unitID,15,21,0,0,quantity + " Units Left",255,255,255,Typeface.BOLD,
+                R.drawable.food_photo,0,0,0,0,1,false,imagepath));
+        rl.addView(createTextView(c,unitID,15,18,0,0,quantity + " Units Left",255,255,255,Typeface.BOLD,
                 RelativeLayout.BELOW,clockImage,RelativeLayout.BELOW,priceID,16,true));
+//        rl.addView(createTextView(c,deleteButton,15,9,0,0,"DELETE",255,0,0,
+//                Typeface.BOLD,RelativeLayout.BELOW,unitID,0,0,0,false));
+        Button deleteButton = createButton(c,deleteButtonId,150,9,0,0,true,
+                255,255,255,"DELETE",0,0,0,12,150,80);
+        deleteButton.setOnClickListener(Listener);
+        rl.addView(deleteButton);
 
         rl.addView(createHiddenTextView(c, foodRowID.toString(), foodRowIDID));
         rl.addView(createHiddenTextView(c, quantity.toString(), quantityID));
@@ -239,9 +214,6 @@ public class FoodCardView {
 
         return cv;
     }
-
-
-
 
     public static TextView createTextView(Context c,int ID, int ml, int mt, int mr, int mb, String text,
                                           int r, int g, int b, int TypefaceStyle,int verb, int subject,
@@ -294,7 +266,8 @@ public class FoodCardView {
     public static ImageView createImageView(Context c,int ID, int width, int height,
                                             int ml, int mt, int mr, int mb,
                                             int maxheight, int resid, int verb, int subject,
-                                            int verb2, int subject2, int right, boolean centerCrop){
+                                            int verb2, int subject2, int right, boolean centerCrop,
+                                            String imagepath){
         ImageView iv = new ImageView(c);
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams
                 (width,height);
@@ -320,17 +293,24 @@ public class FoodCardView {
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
 
+        if (imagepath  != null){
+            Bitmap image = BitmapFactory.decodeFile(imagepath);
+            iv.setImageBitmap(image);
+        }
+        else{
+            iv.setImageResource(resid);
+        }
+
         iv.setLayoutParams(layout);
         iv.setMaxHeight(maxheight);
-        iv.setImageResource(resid);
-
 
 
         return iv;
     }
 
-    public static Button createButton(Context c,int ID, int width, int height, int ml, int mt, int mr,
-                                      int mb, boolean backgroundGreen, int r, int g, int b,String text, int right){
+    public static Button createButton(Context c,int ID, int ml, int mt, int mr,
+                                      int mb, boolean backgroundRed, int r, int g, int b,String text,
+                                      int right,int verb,int subject,int fontsize, int width, int height){
         Button button = new Button(c);
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams
                 (width,height);
@@ -342,14 +322,23 @@ public class FoodCardView {
             button.setId(ID);
         }
 
-        if (backgroundGreen){
-            button.setBackgroundColor(Color.parseColor("#206A5D"));
+        if (backgroundRed){
+            button.setBackgroundColor(Color.parseColor("#FF0000"));
         }
 
         if (right != 0){
             layout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         }
 
+        if (verb != 0){
+            layout.addRule(verb,subject);
+        }
+
+        if (fontsize !=0){
+            button.setTextSize(fontsize);
+        }
+
+        button.setLayoutParams(layout);
         return button;
     }
 }
