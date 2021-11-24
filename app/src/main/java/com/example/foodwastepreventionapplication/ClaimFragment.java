@@ -1,12 +1,20 @@
 package com.example.foodwastepreventionapplication;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,14 +23,9 @@ import android.view.ViewGroup;
  */
 public class ClaimFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USERID = "userId";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Integer mUserId;
 
     public ClaimFragment() {
         // Required empty public constructor
@@ -32,16 +35,13 @@ public class ClaimFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ClaimFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ClaimFragment newInstance(String param1, String param2) {
+    public static ClaimFragment newInstance(int mUserId) {
         ClaimFragment fragment = new ClaimFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_USERID, mUserId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,8 +50,7 @@ public class ClaimFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mUserId = getArguments().getInt(ARG_USERID);
         }
     }
 
@@ -59,6 +58,44 @@ public class ClaimFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_claim, container, false);
+        View view = inflater.inflate(R.layout.fragment_claim, container, false);
+        Button claimButton = (Button) view.findViewById(R.id.claimButton);
+        EditText claimToken = (EditText) view.findViewById(R.id.claimToken);
+        TextView response = (TextView) view.findViewById(R.id.response);
+
+        claimButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String token = claimToken.getText().toString();
+
+                FWPADbHelper dbHelper = new FWPADbHelper(view.getContext());
+
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+                Cursor cursor = db.rawQuery
+                        ("SELECT * FROM receipt r INNER JOIN food f ON r.foodId = f._id " +
+                                " WHERE r.token =? AND r.status =? AND f.sellerid =?",
+                                new String[]{token, "TO BE COLLECTED", mUserId.toString()});
+
+                Log.d("claim","query result count " + cursor.getCount() + " for token " + token);
+
+                if(cursor.getCount() != 0){
+                    SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put("status", "COLLECTED");
+                    dbWrite.update("receipt",values,"token =?", new String[]{token});
+
+                    response.setText(token + " successfully claimed");
+                    Log.d("claim","update receipt with token " + token + " with status collected");
+
+                }
+                else{
+                    response.setText("Failed to claim " + token);
+                }
+
+//                while(cursor.moveToNext()) {}
+            }
+        });
+        return view;
     }
 }

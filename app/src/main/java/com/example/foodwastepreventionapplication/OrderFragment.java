@@ -1,5 +1,6 @@
 package com.example.foodwastepreventionapplication;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -68,25 +69,11 @@ public class OrderFragment extends Fragment {
 //        return inflater.inflate(R.layout.fragment_order, container, false);
 //    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_order, container, false);
-        FWPADbHelper dbHelper = new FWPADbHelper(view.getContext());
+    public void listCard(Cursor cursor, LinearLayout ll, Context c){
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery
-                ("SELECT r._id AS _id, f.name AS foodName, s.name AS restaurantName, f.datetime AS time, r.status AS status, f.price AS price, r.token AS token, f.imagepath FROM receipt r " +
-                        "INNER JOIN food f ON f._id = r.foodId " +
-                        "INNER JOIN seller s ON s._id = f.sellerid", null);
-        LinearLayout ll = view.findViewById(R.id.llorder);
-//
         while(cursor.moveToNext()) {
             String _id = cursor.getString(
                     cursor.getColumnIndexOrThrow("_id"));
-//            String foodId = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("foodId"));
             String status = cursor.getString(
                     cursor.getColumnIndexOrThrow("status"));
             String token = cursor.getString(
@@ -101,14 +88,72 @@ public class OrderFragment extends Fragment {
                     cursor.getColumnIndexOrThrow("price"));
             String imagepath = cursor.getString(
                     cursor.getColumnIndexOrThrow("imagepath"));
+            String location = cursor.getString(
+                    cursor.getColumnIndexOrThrow("location"));
 
 
             Log.d("orderFragment", "reading receipt: _id=" + _id + " status=" + status + " token=" + token) ;
 
 
-            ll.addView(FoodCardView.createOrderCard(view.getContext(),foodName,restaurantName,"Today,",
-                    time,"RM " + String.format("%.2f", price),token, imagepath));
+            ll.addView(FoodCardView.createOrderCard(c,foodName,restaurantName,"Today,",
+                    time,"RM " + String.format("%.2f", price),token, imagepath, location, status));
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        FWPADbHelper dbHelper = new FWPADbHelper(view.getContext());
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery
+                ("SELECT r._id AS _id, f.name AS foodName, s.name AS restaurantName, f.datetime AS time, r.status AS status, f.price AS price, r.token AS token, f.imagepath, s.location FROM receipt r " +
+                        "INNER JOIN food f ON f._id = r.foodId " +
+                        "INNER JOIN seller s ON s._id = f.sellerid" +
+                        " WHERE r.status =?", new String[]{"TO BE COLLECTED"});
+        LinearLayout ll = view.findViewById(R.id.llorder);
+
+        listCard (cursor, ll, view.getContext());
+
+        cursor = db.rawQuery
+                ("SELECT r._id AS _id, f.name AS foodName, s.name AS restaurantName, f.datetime AS time, r.status AS status, f.price AS price, r.token AS token, f.imagepath, s.location FROM receipt r " +
+                        "INNER JOIN food f ON f._id = r.foodId " +
+                        "INNER JOIN seller s ON s._id = f.sellerid" +
+                        " WHERE r.status =?", new String[]{"COLLECTED"});
+
+        listCard(cursor, ll, view.getContext());
+//
+//        while(cursor.moveToNext()) {
+//            String _id = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("_id"));
+////            String foodId = cursor.getString(
+////                    cursor.getColumnIndexOrThrow("foodId"));
+//            String status = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("status"));
+//            String token = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("token"));
+//            String foodName = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("foodName"));
+//            String restaurantName = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("restaurantName"));
+//            String time = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("time"));
+//            Double price = cursor.getDouble(
+//                    cursor.getColumnIndexOrThrow("price"));
+//            String imagepath = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("imagepath"));
+//            String location = cursor.getString(
+//                    cursor.getColumnIndexOrThrow("location"));
+//
+//
+//            Log.d("orderFragment", "reading receipt: _id=" + _id + " status=" + status + " token=" + token) ;
+//
+//
+//            ll.addView(FoodCardView.createOrderCard(view.getContext(),foodName,restaurantName,"Today,",
+//                    time,"RM " + String.format("%.2f", price),token, imagepath, location, status));
+//        }
 
         cursor.close();
 

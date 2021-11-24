@@ -34,6 +34,7 @@
         android:textSize="20dp"/>
 
     <EditText
+        android:id="@+id/claimToken"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_marginTop="15dp"
@@ -46,7 +47,16 @@
         android:fontFamily="sans-serif-black"
         android:inputType="textEmailAddress"/>
 
+        <TextView
+            android:id="@+id/response"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"/>
+
         <Button
+            android:id="@+id/claimButton"
             android:layout_width="150dp"
             android:layout_height="60dp"
             android:backgroundTint="#206A5D"

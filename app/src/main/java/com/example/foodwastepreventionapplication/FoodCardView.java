@@ -100,7 +100,8 @@ public class FoodCardView {
     }
 
     public static CardView createOrderCard (Context c, String foodName, String restaurantName, String day,
-                                       String time, String price, String token, String imagepath){
+                                       String time, String price, String token, String imagepath, String location,
+                                            String status){
         androidx.cardview.widget.CardView cv = new CardView(c);
         cv.setRadius(13);
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams
@@ -121,6 +122,7 @@ public class FoodCardView {
         int tokenID = View.generateViewId();
         int statusID = View.generateViewId();
         int textID = View.generateViewId();
+        int addressID = View.generateViewId();
         RelativeLayout rl = new RelativeLayout(c);
         RelativeLayout.LayoutParams layoutrl = new RelativeLayout.LayoutParams
                 (RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -144,10 +146,12 @@ public class FoodCardView {
                 R.drawable.food_photo,0,0,0,0,1,true, imagepath));
         rl.addView(createTextView(c,tokenID,14,52,0,0,token,0,0,0,Typeface.BOLD,
                 RelativeLayout.BELOW,priceID,0,0,20,false));
-        rl.addView(createTextView(c,statusID,390,60,0,0,"TO BE COLLECTED",255,255,255,
+        rl.addView(createTextView(c,statusID,390,60,0,0,status,255,255,255,
                 Typeface.BOLD,0,0,RelativeLayout.BELOW,priceID,16,true));
         rl.addView(createTextView(c,textID,14,44,0,0,"Go to the restaurant at the specified date and time and show them this receipt to redeem your order",
                 117,117,117,Typeface.NORMAL,RelativeLayout.BELOW,statusID,0,0,11,false));
+        rl.addView(createTextView(c, addressID,14, 15, 0,0 ,location,117,117,117,
+                Typeface.NORMAL, RelativeLayout.BELOW, textID,0,0,11,false));
 
         cv.addView(rl);
 

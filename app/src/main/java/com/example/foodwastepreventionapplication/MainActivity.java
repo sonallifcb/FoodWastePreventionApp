@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         userId = (Integer) getIntent().getSerializableExtra("userId");
         newItemFragment = new NewItemFragment().newInstance(userId);
         viewItemsFragment = new ViewItemsFragment().newInstance(userId);
+        claimFragment = new ClaimFragment().newInstance(userId);
         Integer menuSize = bottomNavigationView.getMenu().size();
         FWPADbHelper dbHelper = new FWPADbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
