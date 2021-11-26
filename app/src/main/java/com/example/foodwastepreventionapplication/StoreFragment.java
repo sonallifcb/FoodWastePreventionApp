@@ -48,6 +48,8 @@ public class StoreFragment extends Fragment {
         public String rating;
         public String distance;
         public String price;
+        public String location;
+        public String description;
     }
 
     public StoreFragment() {
@@ -90,7 +92,7 @@ public class StoreFragment extends Fragment {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery
-        ("SELECT s.name as sellername, f.name as foodname, f.price, f.datetime, f.quantity, f._id, f.imagepath FROM seller s INNER JOIN food f ON s._id = f.sellerid", null);
+        ("SELECT s.name as sellername, f.name as foodname, f.price, f.datetime, f.quantity, f._id, f.imagepath, f.description, s.location FROM seller s INNER JOIN food f ON s._id = f.sellerid", null);
 
         LinearLayout ll = view.findViewById(R.id.llstore);
 
@@ -111,12 +113,16 @@ public class StoreFragment extends Fragment {
                     cursor.getColumnIndexOrThrow("_id"));
             String imagepath = cursor.getString(
                     cursor.getColumnIndexOrThrow("imagepath"));
+            String location = cursor.getString(
+                    cursor.getColumnIndexOrThrow("location"));
+            String description = cursor.getString(
+                    cursor.getColumnIndexOrThrow("description"));
 
 
             Log.d("storeFragment", "onCreateView: " + sellerName + " " + foodName + " " + price) ;
 
             CardView cv = FoodCardView.createCard(view.getContext(),sellerName,foodName,
-                    "Today,",datetime,"4.6","0.8km","RM " + String.format("%.2f", price),
+                    "Today,",datetime,"4.6",location,"RM " + String.format("%.2f", price),
                     quantity,foodRowID, dbHelper, imagepath);
 
             cv.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +149,7 @@ public class StoreFragment extends Fragment {
                                         ContentValues values = new ContentValues();
                                         values.put(FWPAContract.Receipt.COLUMN_NAME_FOODID, Integer.valueOf(foodRowID));
                                         values.put(FWPAContract.Receipt.COLUMN_NAME_STATUS, "TO BE COLLECTED");
-                                        values.put(FWPAContract.Receipt.COLUMN_NAME_TOKEN, "AK-" + foodRowID + "-" + Integer.toString(totalOrder + 1));
+                                        values.put(FWPAContract.Receipt.COLUMN_NAME_TOKEN, "R-" + foodRowID + "-" + Integer.toString(totalOrder + 1));
 
                                         long newRowId = dbWrite.insert(FWPAContract.Receipt.TABLE_NAME, null, values);
                                         Log.d("newItem", "new item added with id " + newRowId + "with value " + values.toString());
@@ -179,12 +185,12 @@ public class StoreFragment extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 //
                     if (quantity != 0){
-                        builder.setMessage("Would you like to redeem this item?").setPositiveButton("Yes", dialogClickListener)
+                        builder.setMessage("Description: " + description + " \n\n" + "Would you like to redeem this item?").setPositiveButton("Yes", dialogClickListener)
                                 .setNegativeButton("No", dialogClickListener).show();
                     }
 
                     else{
-                        builder.setMessage("Sorry this item is sold out").setPositiveButton("Yes",null).show();
+                        builder.setMessage("Sorry this item is sold out").setPositiveButton("OK",null).show();
                     }
 
                 }

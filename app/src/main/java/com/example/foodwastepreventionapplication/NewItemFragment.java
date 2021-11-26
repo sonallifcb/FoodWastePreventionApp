@@ -1,6 +1,7 @@
 package com.example.foodwastepreventionapplication;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +11,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.icu.text.CaseMap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -25,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +62,6 @@ public class NewItemFragment extends Fragment {
      *
      * @return A new instance of fragment NewItemFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static NewItemFragment newInstance(int _userId) {
         NewItemFragment fragment = new NewItemFragment();
         Bundle args = new Bundle();
@@ -121,6 +124,21 @@ public class NewItemFragment extends Fragment {
         foodImage = (ImageView)view.findViewById(R.id.foodImage);
         addImageText = (TextView) view.findViewById(R.id.addImageText);
 
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog  = new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        Integer hour = timePicker.getHour();
+                        Integer minute = timePicker.getMinute();
+                        time.setText(hour + ":" + minute);
+                    }
+                },0,0,true);
+                timePickerDialog.show();
+            }
+        });
 
         addImageIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,34 +151,66 @@ public class NewItemFragment extends Fragment {
 
         Button button = (Button) view.findViewById(R.id.createitembutton);
         button.setOnClickListener(new View.OnClickListener(){
+
+            public boolean validate(EditText et, String errorMessage){
+                if (et.getText().toString().length() == 0){
+                    et.requestFocus();
+                    et.setError(errorMessage);
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+
             public void onClick (View v)
             {
-                Log.d("TAG", "onClick: "+title.getText().toString());
-                Log.d("TAG", "onClick: "+description.getText().toString());
-                Log.d("TAG", "onClick: "+time.getText().toString());
-                Log.d("TAG", "onClick: "+price.getText().toString());
-                Log.d("TAG", "onClick: "+quantity.getText().toString());
-                Log.d("TAG", "onClick: "+category.getSelectedItem().toString());
+                boolean valid = true;
 
-                ContentValues values = new ContentValues();
-                values.put(FWPAContract.Food.COLUMN_NAME_NAME, title.getText().toString());
-                values.put(FWPAContract.Food.COLUMN_NAME_DESCRIPTION, description.getText().toString());
-                values.put(FWPAContract.Food.COLUMN_NAME_QUANTITY,quantity.getText().toString());
-                values.put(FWPAContract.Food.COLUMN_NAME_CATEGORY, category.getSelectedItem().toString());
-                values.put(FWPAContract.Food.COLUMN_NAME_PRICE,price.getText().toString());
-                values.put(FWPAContract.Food.COLUMN_NAME_SELLERID, mUserId);
-                values.put(FWPAContract.Food.COLUMN_NAME_DATETIME, time.getText().toString());
-                values.put(FWPAContract.Food.COLUMN_NAME_IMAGEPATH, filePath);
+                valid = validate(quantity,"Quantity required") && valid;
+                valid = validate(price,"Price required") && valid;
+                valid = validate(time,"Time required") && valid;
+                valid = validate(description,"Description required") && valid;
+                valid = validate(title,"Title required") && valid;
+
+                if(valid){
+                    Log.d("TAG", "onClick: "+title.getText().toString());
+                    Log.d("TAG", "onClick: "+description.getText().toString());
+                    Log.d("TAG", "onClick: "+time.getText().toString());
+                    Log.d("TAG", "onClick: "+price.getText().toString());
+                    Log.d("TAG", "onClick: "+quantity.getText().toString());
+                    Log.d("TAG", "onClick: "+category.getSelectedItem().toString());
+
+                    ContentValues values = new ContentValues();
+                    values.put(FWPAContract.Food.COLUMN_NAME_NAME, title.getText().toString());
+                    values.put(FWPAContract.Food.COLUMN_NAME_DESCRIPTION, description.getText().toString());
+                    values.put(FWPAContract.Food.COLUMN_NAME_QUANTITY,quantity.getText().toString());
+                    values.put(FWPAContract.Food.COLUMN_NAME_CATEGORY, category.getSelectedItem().toString());
+                    values.put(FWPAContract.Food.COLUMN_NAME_PRICE,price.getText().toString());
+                    values.put(FWPAContract.Food.COLUMN_NAME_SELLERID, mUserId);
+                    values.put(FWPAContract.Food.COLUMN_NAME_DATETIME, time.getText().toString());
+                    values.put(FWPAContract.Food.COLUMN_NAME_IMAGEPATH, filePath);
 
 
-                FWPADbHelper dbHelper = new FWPADbHelper(v.getContext());
-                SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
+                    FWPADbHelper dbHelper = new FWPADbHelper(v.getContext());
+                    SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
 
-                long newRowId = dbWrite.insert(FWPAContract.Food.TABLE_NAME, null, values);
-                Log.d("db", "onCreateView: insertNewRowID " + newRowId);
+                    long newRowId = dbWrite.insert(FWPAContract.Food.TABLE_NAME, null, values);
+                    Log.d("db", "onCreateView: insertNewRowID " + newRowId);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setMessage("Listing created").setPositiveButton("OK",null).show();
+                    title.setText("");
+                    description.setText("");
+                    time.setText("");
+                    price.setText("");
+                    quantity.setText("");
+
+                    foodImage.setImageBitmap(null);
+                    addImageIcon.setVisibility(View.VISIBLE);
+                    addImageText.setVisibility(View.VISIBLE);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setMessage("Listing created").setPositiveButton("OK",null).show();
+                }
 
             }
         });

@@ -68,6 +68,11 @@ public class ClaimFragment extends Fragment {
             public void onClick(View view) {
                 String token = claimToken.getText().toString();
 
+                if(token.length() == 0){
+                    response.setText("Please key in token");
+                    return;
+                }
+
                 FWPADbHelper dbHelper = new FWPADbHelper(view.getContext());
 
                 SQLiteDatabase db = dbHelper.getReadableDatabase();

@@ -34,7 +34,7 @@
             android:layout_marginTop="30dp"/>
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/profileUsername"
             android:layout_width="250dp"
             android:layout_height="30dp"
             android:layout_marginTop="20px"
@@ -44,7 +44,8 @@
             android:text="Ali Kopitiam"
             android:textAlignment="center"
             android:fontFamily="sans-serif"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/textView"
@@ -57,7 +58,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress2"
+            android:id="@+id/profileEmail"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="20px"
@@ -66,7 +67,8 @@
             android:inputType="textEmailAddress"
             android:text="alikopitiam@gmail.com"
             android:textAlignment="center"
-            android:fontFamily="sans-serif"/>
+            android:fontFamily="sans-serif"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/location"
@@ -79,7 +81,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextTextLocation"
+            android:id="@+id/profileLocation"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="20px"
@@ -88,26 +90,8 @@
             android:inputType="text"
             android:text="Subang Jaya"
             android:textAlignment="center"
-            android:fontFamily="sans-serif"/>
-
-<!--        <TextView-->
-<!--            android:id="@+id/textView2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="50px"-->
-<!--            android:fontFamily="sans-serif-black"-->
-<!--            android:text="Password"-->
-<!--            android:textAlignment="center"-->
-<!--            android:textSize="18sp" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/editTextTextPassword"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginTop="20px"-->
-<!--            android:background="@drawable/edit_text_background"-->
-<!--            android:ems="10"-->
-<!--            android:inputType="textPassword" />-->
+            android:fontFamily="sans-serif"
+            android:focusable="false"/>
 
         <Button
             android:id="@+id/logoutButton"

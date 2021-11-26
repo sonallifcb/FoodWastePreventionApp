@@ -76,7 +76,7 @@ public class FWPADbHelper extends SQLiteOpenHelper {
 
         ContentValues valuesSeller2 = new ContentValues();
         valuesSeller2.put(FWPAContract.Users.COLUMN_NAME_EMAIL, "nkandar@gmail.com");
-        valuesSeller2.put(FWPAContract.Users.COLUMN_NAME_NAME, "Nasi Kandar Special");
+        valuesSeller2.put(FWPAContract.Users.COLUMN_NAME_NAME, "Nasi Kandar NK");
         valuesSeller2.put(FWPAContract.Users.COLUMN_NAME_USERNAME, "NKandar");
         valuesSeller2.put(FWPAContract.Users.COLUMN_NAME_LOCATION,"Cheras");
         valuesSeller2.put(FWPAContract.Users.COLUMN_NAME_PASSWORD, "112233");

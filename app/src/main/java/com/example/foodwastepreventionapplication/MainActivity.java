@@ -19,22 +19,25 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        bottomNavigationView = findViewById(R.id.bottomNav);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.menu2);
         userId = (Integer) getIntent().getSerializableExtra("userId");
+
         newItemFragment = new NewItemFragment().newInstance(userId);
         viewItemsFragment = new ViewItemsFragment().newInstance(userId);
         claimFragment = new ClaimFragment().newInstance(userId);
-        Integer menuSize = bottomNavigationView.getMenu().size();
+        profileFragment = new ProfileFragment().newInstance(userId);
+
         FWPADbHelper dbHelper = new FWPADbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT " + FWPAContract.Users.COLUMN_NAME_TYPE + " FROM " + FWPAContract.Users.TABLE_NAME + " WHERE " + FWPAContract.Users._ID + "=" + userId,null);
         cursor.moveToNext();
 
         userType = cursor.getString(cursor.getColumnIndexOrThrow(FWPAContract.Users.COLUMN_NAME_TYPE));
+
+        bottomNavigationView = findViewById(R.id.bottomNav);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.menu2);
+        Integer menuSize = bottomNavigationView.getMenu().size();
 
         for (int i = 0; i < menuSize; i++)
         {
@@ -63,18 +66,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
 
             }
-//            if (id == R.id.menu3) {
-//                    menuItem.setIcon(R.drawable.ic_profile);
-//            }
-//
-//            if (id == R.id.menu4){
-//                if (user.equals("customer")) {
-//                    menuItem.setVisible(false);
-//                }
-//                else if (user.equals("restaurant")){
-//                    menuItem.setVisible(true);
-//                    menuItem.setIcon(R.drawable.claim_foreground);
-//                }
 
              if (id == R.id.menu3) {
                 if (userType.equals("customer")) {
@@ -102,20 +93,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                  }
 
              }
-
-//            if (id == R.id.menu4) {
-//                menuItem.setIcon(R.drawable.ic_profile);
-//            }
-//
-//            if (id == R.id.menu3){
-//                if (user.equals("customer")) {
-//                    menuItem.setVisible(false);
-//                }
-//                else if (user.equals("restaurant")){
-//                    menuItem.setVisible(true);
-//                    menuItem.setIcon(R.drawable.claim_foreground);
-//                }
-//            }
 
         }
 
@@ -163,6 +140,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.menu4:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, claimFragment).commit();
                 return true;
+
+            default:
+                if (userType.equals("customer") ){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, orderFragment).commit();
+                }
+                else if (userType.equals("seller")){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottomNav, viewItemsFragment).commit();
+                }
 
         }
         return false;
