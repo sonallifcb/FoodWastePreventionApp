@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    public FavouriteFragment favouriteFragment = new FavouriteFragment();
     public OrderFragment orderFragment = new OrderFragment();
     public StoreFragment storeFragment = new StoreFragment();
     public ProfileFragment profileFragment = new ProfileFragment();

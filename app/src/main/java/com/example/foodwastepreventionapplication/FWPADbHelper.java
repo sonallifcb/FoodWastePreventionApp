@@ -19,7 +19,7 @@ public class FWPADbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_FOOD =
             "CREATE TABLE " + FWPAContract.Food.TABLE_NAME + " (" +
-                    FWPAContract.Food._ID + " INTEGER PRIMARY KEY," +
+                    FWPAContract.Food._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FWPAContract.Food.COLUMN_NAME_NAME + " TEXT,"+
                     FWPAContract.Food.COLUMN_NAME_DESCRIPTION + " TEXT," +
                     FWPAContract.Food.COLUMN_NAME_QUANTITY + " INTEGER," +
@@ -31,7 +31,7 @@ public class FWPADbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_RECEIPT =
             "CREATE TABLE " + FWPAContract.Receipt.TABLE_NAME + " (" +
-                    FWPAContract.Receipt._ID + " INTEGER PRIMARY KEY," +
+                    FWPAContract.Receipt._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FWPAContract.Receipt.COLUMN_NAME_FOODID + " INTEGER,"+
                     FWPAContract.Receipt.COLUMN_NAME_STATUS + " TEXT,"+
                     FWPAContract.Receipt.COLUMN_NAME_TOKEN + " TEXT)";
@@ -47,7 +47,7 @@ public class FWPADbHelper extends SQLiteOpenHelper {
 
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION =10;
+    public static final int DATABASE_VERSION =13;
     public static final String DATABASE_NAME = "FWPA.db";
 
     public FWPADbHelper(Context context) {
@@ -60,10 +60,7 @@ public class FWPADbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_USERS);
         db.execSQL(SQL_CREATE_FOOD);
         db.execSQL(SQL_CREATE_RECEIPT);
-//        db.rawQuery("INSERT INTO seller (email, password, name, location) " +
-//                "VALUES (?,?,?,?)",new String[]{"alikopitiam@gmail.com","123456","Ali Kopitiam","Subang Jaya"});
-//        db.rawQuery("INSERT INTO food (name, description, quantity, category, price, sellerid, datetime) " +
-//                "VALUES (?,?,?,?,?,?,?)",new String[]{"Nasi Lemak", "Coconut rice with sambal", "5", "Meals", "1.50", "1", "13/11/2021 16:00"});
+
         ContentValues valuesSeller = new ContentValues();
         valuesSeller.put(FWPAContract.Users.COLUMN_NAME_EMAIL, "alikopi@gmail.com");
         valuesSeller.put(FWPAContract.Users.COLUMN_NAME_NAME, "Ali Kopitiam");

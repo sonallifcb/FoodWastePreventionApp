@@ -33,8 +33,6 @@
             cardview:cardPreventCornerOverlap="true"
             cardview:cardUseCompatPadding="true">
 
-<!--            cardview:cardBackgroundColor="#5C5B5B"-->
-
             <ImageView
                 android:id="@+id/foodImage"
                 android:layout_width="322dp"
@@ -126,7 +124,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price"
+            android:text="Price (RM)"
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="35dp"

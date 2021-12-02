@@ -60,15 +60,6 @@ public class OrderFragment extends Fragment {
         }
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//
-//
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_order, container, false);
-//    }
-
     public void listCard(Cursor cursor, LinearLayout ll, Context c){
 
         while(cursor.moveToNext()) {
@@ -124,41 +115,8 @@ public class OrderFragment extends Fragment {
                         " WHERE r.status =?", new String[]{"COLLECTED"});
 
         listCard(cursor, ll, view.getContext());
-//
-//        while(cursor.moveToNext()) {
-//            String _id = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("_id"));
-////            String foodId = cursor.getString(
-////                    cursor.getColumnIndexOrThrow("foodId"));
-//            String status = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("status"));
-//            String token = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("token"));
-//            String foodName = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("foodName"));
-//            String restaurantName = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("restaurantName"));
-//            String time = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("time"));
-//            Double price = cursor.getDouble(
-//                    cursor.getColumnIndexOrThrow("price"));
-//            String imagepath = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("imagepath"));
-//            String location = cursor.getString(
-//                    cursor.getColumnIndexOrThrow("location"));
-//
-//
-//            Log.d("orderFragment", "reading receipt: _id=" + _id + " status=" + status + " token=" + token) ;
-//
-//
-//            ll.addView(FoodCardView.createOrderCard(view.getContext(),foodName,restaurantName,"Today,",
-//                    time,"RM " + String.format("%.2f", price),token, imagepath, location, status));
-//        }
 
         cursor.close();
-
-//        ll.addView(FoodCardView.createOrderCard(view.getContext(),"Fried Rice","Ali Kopitiam","Today,",
-//                "15:00","RM " + String.format("%.2f", 2.50),"A K 0 0 1"));
 
         return view;
     }

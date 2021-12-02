@@ -209,8 +209,6 @@ public class FoodCardView {
                 Typeface.BOLD,RelativeLayout.BELOW,clockImage,0,0,16,false,0));
         rl.addView(createImageView(c,foodImage,450,450,0,0,0,0,450,
                 R.drawable.food_photo,0,0,0,0,1,false,imagepath));
-//        rl.addView(createTextView(c,unitID,15,12,0,0,quantity + " Units Left",255,255,255,Typeface.BOLD,
-//                RelativeLayout.BELOW,clockImage,RelativeLayout.BELOW,priceID,0,true,0));
         Button deleteButton = createButton(c,deleteButtonId,15,12,0,0,true,
                 255,255,255,"DELETE",0,RelativeLayout.BELOW,unitID,12);
         deleteButton.setOnClickListener(Listener);
@@ -340,8 +338,6 @@ public class FoodCardView {
                                       int mb, boolean backgroundRed, int r, int g, int b,String text,
                                       int right,int verb,int subject,int fontsize){
         Button button = new Button(c);
-//        RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams
-//                (width,height);
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams
                 (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layout.setMargins(ml,mt,mr,mb);

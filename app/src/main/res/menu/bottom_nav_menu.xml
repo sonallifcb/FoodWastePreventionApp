@@ -9,14 +9,6 @@
         android:id="@+id/menu2"
         android:title="Store" />
 
-<!--    <item-->
-<!--        android:id="@+id/menu3"-->
-<!--        android:title="Profile" />-->
-
-<!--    <item-->
-<!--        android:id="@+id/menu4"-->
-<!--        android:title="Claim" />-->
-
     <item
         android:id="@+id/menu4"
         android:title="Profile" />
@@ -24,8 +16,5 @@
     <item
         android:id="@+id/menu3"
         android:title="Claim" />
-
-
-
 
 </menu>

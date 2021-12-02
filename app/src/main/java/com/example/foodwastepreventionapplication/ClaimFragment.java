@@ -1,12 +1,17 @@
 package com.example.foodwastepreventionapplication;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +68,7 @@ public class ClaimFragment extends Fragment {
         EditText claimToken = (EditText) view.findViewById(R.id.claimToken);
         TextView response = (TextView) view.findViewById(R.id.response);
 
+
         claimButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,21 +90,40 @@ public class ClaimFragment extends Fragment {
 
                 Log.d("claim","query result count " + cursor.getCount() + " for token " + token);
 
+
                 if(cursor.getCount() != 0){
                     SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();
                     values.put("status", "COLLECTED");
                     dbWrite.update("receipt",values,"token =?", new String[]{token});
 
+                    values.put(FWPAContract.Food.COLUMN_NAME_NAME, claimToken.getText().toString());
+
+
+                    long newRowId = dbWrite.insert(FWPAContract.Food.TABLE_NAME, null,null);
+                    Log.d("db", "onCreateView: insertNewRowID " + newRowId);
+
+                    claimToken.setText("");
+
+
                     response.setText(token + " successfully claimed");
                     Log.d("claim","update receipt with token " + token + " with status collected");
 
                 }
                 else{
+                    SQLiteDatabase dbWrite = dbHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put(FWPAContract.Food.COLUMN_NAME_NAME, claimToken.getText().toString());
+
+                    long newRowId = dbWrite.insert(FWPAContract.Food.TABLE_NAME, null,null);
+                    Log.d("db", "onCreateView: insertNewRowID " + newRowId);
+
+                    claimToken.setText("");
+
+
                     response.setText("Failed to claim " + token);
                 }
 
-//                while(cursor.moveToNext()) {}
             }
         });
         return view;
